@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <!-- Define a traditional camel context here -->
+    <bean class="org.apache.camel.component.kafka.KafkaComponent" id="kafka">
+        <property name="brokers" value="kafka:9092"/>
+    </bean>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="simple-route">
+            <from id="_kafka1" uri="kafka:registration"/>
+            <log id="route-log" message=">>> ${body}"/>
+            <setBody id="_setBody1">
+                <jsonpath>$.seatno</jsonpath>
+            </setBody>
+            <log id="route-log" message=">>> ${body}"/>
+            <to id="_kafka2" uri="kafka:allocateseats"/>
+        </route>
+    </camelContext>
+</beans>
