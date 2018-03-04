@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <!-- Define a traditional camel context here -->
+    <bean class="org.apache.camel.component.kafka.KafkaComponent" id="kafka">
+        <property name="brokers" value="kafka:9092"/>
+    </bean>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
+            component="undertow" contextPath="/skoregistration"
+            enableCORS="true" port="8080">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="SKO Registration"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        <rest path="/sa">
+            <get uri="/status">
+                <description>Integration talk seat reserve status</description>
+                <to uri="direct:getData"/>
+            </get>
+        </rest>
+        <route id="simple-route">
+            <from id="_kafka1" uri="kafka:registration"/>
+            <log id="route-log1" message=">>> ${body}"/>
+            <setHeader headerName="candidatename" id="_setHeader1">
+                <jsonpath>$.candidatename</jsonpath>
+            </setHeader>
+            <setHeader headerName="email" id="_setHeader2">
+                <jsonpath>$.email</jsonpath>
+            </setHeader>
+            <setHeader headerName="seatname" id="_setHeader3">
+                <jsonpath>$.seatname</jsonpath>
+            </setHeader>
+            <setHeader headerName="seatno" id="_setHeader4">
+                <jsonpath>$.seatno</jsonpath>
+            </setHeader>
+            <log id="route-log3" message=">>> ${body}"/>
+            <to id="_to1" uri="sql:INSERT INTO reservationlist (candidatename,email,seatname,seatno) VALUES (:#candidatename,:#email,:#seatname,:#seatno);?dataSource=dataSource"/>
+        </route>
+        <route id="get-data-route">
+            <from id="_direct1" uri="direct:getData"/>
+            <log id="route-log2" message=">>> ${body}"/>
+            <to id="_to2" uri="sql:select candidatename, email, seatname, seatno from reservationlist; "/>
+        </route>
+    </camelContext>
+</beans>
