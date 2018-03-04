@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean class="org.apache.camel.component.kafka.KafkaComponent" id="kafka">
+        <property name="brokers" value="kafka:9092"/>
+    </bean>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
+            component="undertow" contextPath="/analytic"
+            enableCORS="true" port="8080">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="SKO seats allocation"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        <rest path="/status">
+            <get uri="class">
+                <description>Class booking status</description>
+                <to uri="direct:classstatus"/>
+            </get>
+            <get uri="row">
+                <description>Row booking status</description>
+                <to uri="direct:rowstatus"/>
+            </get>
+        </rest>
+        <route id="analytic-listener-route">
+            <from id="route-timer" uri="kafka:registration"/>
+            <setBody id="_setBody1">
+                <jsonpath>$.seatno</jsonpath>
+            </setBody>
+            <bean id="_bean1" ref="AnalyticProcessor"/>
+            <to id="_to1" uri="sql:INSERT INTO rowcount (class, row) VALUES (:#class,:#row);?dataSource=dataSource"/>
+            <log id="route-log1" message=">>> ${body}"/>
+        </route>
+        <route id="class-route">
+            <from id="_direct1" uri="direct:classstatus"/>
+            <to id="_to2" uri="sql:SELECT class, COUNT(row) as cnt FROM rowcount GROUP BY class;?dataSource=dataSource"/>
+            <log id="route-log2" message=">>> ${body}"/>
+        </route>
+        <route id="row-route">
+            <from id="_direct2" uri="direct:rowstatus"/>
+            <to id="_to3" uri="sql:SELECT row, COUNT(row) as cnt FROM rowcount GROUP BY row;?dataSource=dataSource"/>
+            <log id="route-log4" message=">>> ${body}"/>
+        </route>
+    </camelContext>
+</beans>
