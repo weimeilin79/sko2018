@@ -1,0 +1,9 @@
+DROP TABLE IF EXISTS bookedseat;
+CREATE TABLE bookedseat (
+	seatno varchar(10) NOT NULL
+);
+
+INSERT INTO bookedseat (seatno) VALUES ('1_23');
+INSERT INTO bookedseat (seatno) VALUES ('10_21');
+INSERT INTO bookedseat (seatno) VALUES ('12_45');
+INSERT INTO bookedseat (seatno) VALUES ('17_13');
