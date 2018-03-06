@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean class="org.apache.camel.component.kafka.KafkaComponent" id="kafka">
+        <property name="brokers" value="kafka:9092"/>
+    </bean>
+    <!-- Define a traditional camel context here -->
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="event-route">
+            <from id="direct2" uri="timer:foo?period=2000"/>
+            <bean id="_bean1" ref="SeatNoGenerator"/>
+            <marshal id="_marshal1">
+                <json library="Jackson" unmarshalTypeName="org.mycompany.Reservation"/>
+            </marshal>
+            <log id="route-log1" message=">>> ${body}"/>
+            <to id="_kafka1" uri="kafka:registration"/>
+        </route>
+    </camelContext>
+</beans>
