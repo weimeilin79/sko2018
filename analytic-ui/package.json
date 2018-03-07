@@ -4,6 +4,7 @@
   "description": "Patternfly demo app",
   "main": "server/app.js",
   "dependencies": {
+    "jquery-match-height": "^0.7.2",
     "patternfly": "3.11.0"
   },
   "devDependencies": {
