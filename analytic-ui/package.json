@@ -35,12 +35,11 @@
     "build:dev": "webpack --config build/webpack.config.js",
     "build:prod": "webpack -p --config build/webpack.config.js",
     "start": "npm run build:dev && node server/app.js",
-    "clean": "rm -rf dist/*",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf dist/*"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/weimeilin79/sko2018/analytic-ui.git"
+    "url": "git+https://github.com/weimeilin79/sko2018.git"
   },
   "authors": [
     "Andres Galante <agalante@gmail.com> (https://github.com/andresgalante)",
