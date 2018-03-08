@@ -1,0 +1,169 @@
+
+
+<!doctype html>
+
+<html>
+	<head>
+		<title>Red Hat Integration Demo</title>
+		
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="jquery.seat-charts.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	
+	<body>
+		
+		<div class="wrapper">
+			<div class="container">
+				<div id="seat-map">
+					<div class="front-indicator">THE RED HAT INTEGRATION DEMO</div>
+					
+				</div>
+				<!--<div class="booking-details">
+					<h2>Booking Details</h2>
+					
+					<h3> Selected Seats (<span id="counter">0</span>):</h3>
+					<ul id="selected-seats"></ul>
+					
+					Total: <b>$<span id="total">0</span></b>
+					
+					<button class="checkout-button">Checkout &raquo;</button>
+					
+					<div id="legend"></div>
+				</div>-->
+			</div>
+		</div>
+		
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="jquery.seat-charts.js"></script>
+		
+		<script>
+			var firstSeatLabel = 1;
+		
+			$(document).ready(function() {
+				var $cart = $('#selected-seats'),
+					$counter = $('#counter'),
+					$total = $('#total'),
+					sc = $('#seat-map').seatCharts({
+					map: [
+						'_________fffffffff_fffffffff_ffffffffff_________',
+						'_________fffffffff_fffffffff_ffffffffff_________',
+						'_______f_fffffffff_fffffffff_ffffffffff_f_______',
+						'______ff_fffffffff_fffffffff_ffffffffff_ff______',
+						'_____eee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eee-____',
+						'____eeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeee____',
+						'___eeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeee___',
+						'__eeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeee__',
+						'_eeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeee_',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+						'eeeeeeee_eeeeeeeee_eeeeeeeee_eeeeeeeeee_eeeeeeee',
+					],
+					seats: {
+						f: {
+							price   : 100,
+							classes : 'first-class', //your custom CSS class
+							category: 'LOGE'
+						},
+						e: {
+							price   : 40,
+							classes : 'economy-class', //your custom CSS class
+							category: 'CLUB'
+						}					
+					
+					},
+					naming : {
+						top : false,
+						getLabel : function (character, row, column) {
+							return firstSeatLabel++;
+						},
+					},
+					legend : {
+						node : $('#legend'),
+					    items : [
+							[ 'f', 'available',   'LOGE' ],
+							[ 'e', 'available',   'CLUB'],
+							[ 'f', 'unavailable', 'Already Booked']
+					    ]					
+					},
+					click: function () {
+						if (this.status() == 'available') {
+							//let's create a new <li> which we'll add to the cart items
+							//$('<li>'+this.data().category+' Seat # '+this.settings.label+': <b>$'+this.data().price+'</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
+							//	.attr('id', 'cart-item-'+this.settings.id)
+							//	.data('seatId', this.settings.id)
+							//	.appendTo($cart);
+							console.log('[id : cart-item-'+this.settings.id + ', seatId:'+this.settings.id+']');
+							/*
+							 * Lets update the counter and total
+							 *
+							 * .find function will not find the current seat, because it will change its stauts only after return
+							 * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
+							 */
+							//$counter.text(sc.find('selected').length+1);
+							//$total.text(recalculateTotal(sc)+this.data().price);
+							
+							return 'selected';
+						} else if (this.status() == 'selected') {
+							//update the counter
+							//$counter.text(sc.find('selected').length-1);
+							//and total
+							//$total.text(recalculateTotal(sc)-this.data().price);
+						
+							//remove the item from our cart
+							//$('#cart-item-'+this.settings.id).remove();
+						
+							//seat has been vacated
+							return 'available';
+						} else if (this.status() == 'unavailable') {
+							//seat has been already booked
+							return 'unavailable';
+						} else {
+							return this.style();
+						}
+					}
+				});
+
+				//this will handle "[cancel]" link clicks
+				$('#selected-seats').on('click', '.cancel-cart-item', function () {
+					//let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
+					sc.get($(this).parents('li:first').data('seatId')).click();
+				});
+
+				//let's pretend some seats have already been booked
+				//sc.get(['1_23', '10_21', '12_45', '17_13']).status('unavailable');
+				
+				var interval;
+				function callAjax() {
+				  $.ajax({
+				                type: 'GET',
+				                url: 'http://localhost:8080/sko/sa/integration',
+				                data: $(this).serialize(),
+				                dataType: 'json',
+				                success: function (data) {
+				                				var reservedseats = [];
+				                        $.each(data, function (index, value) {
+																    reservedseats.push(value.SEATNO);
+																});
+																console.log(reservedseats);
+																sc.get(reservedseats).status('unavailable');
+				                        interval = setTimeout(callAjax, 5000);   
+				                }
+				        });
+				}
+				callAjax();
+			
+		});
+
+		
+		
+		</script>
+	</body>
+</html>
