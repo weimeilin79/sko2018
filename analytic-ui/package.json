@@ -1,10 +1,9 @@
 {
-  "name": "patternfly-demo-app",
+  "name": "analytic-ui",
   "version": "1.0.0",
-  "description": "Patternfly demo app",
+  "description": "analytic-ui",
   "main": "server/app.js",
   "dependencies": {
-    "jquery-match-height": "^0.7.2",
     "patternfly": "3.11.0"
   },
   "devDependencies": {
@@ -27,7 +26,7 @@
     "strip-ansi": "^3.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.10.5",
+    "webpack": "^1.15.0",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.12.1",
     "write-file-webpack-plugin": "^3.1.8"
@@ -41,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/patternfly/patternfly-demo-app.git"
+    "url": "git+https://github.com/weimeilin79/sko2018/analytic-ui.git"
   },
   "authors": [
     "Andres Galante <agalante@gmail.com> (https://github.com/andresgalante)",
@@ -49,7 +48,7 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/patternfly/patternfly-demo-app/issues"
+    "url": "https://github.com/weimeilin79/sko2018/analytic-ui/issues"
   },
-  "homepage": "https://github.com/patternfly/patternfly-demo-app#readme"
+  "homepage": "https://github.com/weimeilin79/sko2018/analytic-ui#readme"
 }
