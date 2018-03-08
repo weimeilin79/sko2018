@@ -1,0 +1,213 @@
+<html>
+	<style type="text/css">
+		.form-style-5{
+		    max-width: 500px;
+		    padding: 10px 20px;
+		    background: #f4f7f8;
+		    margin: 10px auto;
+		    padding: 20px;
+		    background: #f4f7f8;
+		    border-radius: 8px;
+		    font-family: Georgia, "Times New Roman", Times, serif;
+		}
+		.form-style-5 fieldset{
+		    border: none;
+		}
+		.form-style-5 legend {
+		    font-size: 1.4em;
+		    margin-bottom: 10px;
+		}
+		.form-style-5 label {
+		    display: block;
+		    margin-bottom: 8px;
+		}
+		.form-style-5 input[type="text"],
+		.form-style-5 input[type="date"],
+		.form-style-5 input[type="datetime"],
+		.form-style-5 input[type="email"],
+		.form-style-5 input[type="number"],
+		.form-style-5 input[type="search"],
+		.form-style-5 input[type="time"],
+		.form-style-5 input[type="url"],
+		.form-style-5 textarea,
+		.form-style-5 select {
+		    font-family: Georgia, "Times New Roman", Times, serif;
+		    background: rgba(255,255,255,.1);
+		    border: none;
+		    border-radius: 4px;
+		    font-size: 16px;
+		    margin: 0;
+		    outline: 0;
+		    padding: 7px;
+		    width: 100%;
+		    box-sizing: border-box; 
+		    -webkit-box-sizing: border-box;
+		    -moz-box-sizing: border-box; 
+		    background-color: #e8eeef;
+		    color:#8a97a0;
+		    -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+		    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+		    margin-bottom: 30px;
+		    
+		}
+		.form-style-5 input[type="text"]:focus,
+		.form-style-5 input[type="date"]:focus,
+		.form-style-5 input[type="datetime"]:focus,
+		.form-style-5 input[type="email"]:focus,
+		.form-style-5 input[type="number"]:focus,
+		.form-style-5 input[type="search"]:focus,
+		.form-style-5 input[type="time"]:focus,
+		.form-style-5 input[type="url"]:focus,
+		.form-style-5 textarea:focus,
+		.form-style-5 select:focus{
+		    background: #d2d9dd;
+		}
+		.form-style-5 select{
+		    -webkit-appearance: menulist-button;
+		    height:35px;
+		}
+		.form-style-5 .number {
+		    background: #1abc9c;
+		    color: #fff;
+		    height: 30px;
+		    width: 30px;
+		    display: inline-block;
+		    font-size: 0.8em;
+		    margin-right: 4px;
+		    line-height: 30px;
+		    text-align: center;
+		    text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+		    border-radius: 15px 15px 15px 0px;
+		}
+		
+		.form-style-5 input[type="submit"],
+		.form-style-5 input[type="button"]
+		{
+		    position: relative;
+		    display: block;
+		    padding: 19px 39px 18px 39px;
+		    color: #FFF;
+		    margin: 0 auto;
+		    background: #1abc9c;
+		    font-size: 18px;
+		    text-align: center;
+		    font-style: normal;
+		    width: 100%;
+		    border: 1px solid #16a085;
+		    border-width: 1px 1px 3px;
+		    margin-bottom: 10px;
+		}
+		.form-style-5 input[type="submit"]:hover,
+		.form-style-5 input[type="button"]:hover
+		{
+		    background: #109177;
+		}
+	</style>
+	
+	<script>
+		
+		var colno=0;
+		function setrowcolno(){
+			var seatname = parseInt(document.getElementById("seatname").value);
+			colno=0;
+			console.log(seatname);
+			
+			if(!isANumber(seatname)){
+				alert("Seat number ONLY allows numeric values");
+				resetseatname();
+				return;
+			}else{
+				if(seatname > 0 && seatname <= 28){
+					colno = calcolno(8,seatname);
+					document.getElementById("seatno").value="1_"+colno;
+				}else if(seatname > 28 && seatname <= 56){
+					colno = calcolno(8,seatname-28);
+					document.getElementById("seatno").value="2_"+colno;
+				}else if(seatname > 56 && seatname <= 86){
+					colno = calcolno(7,seatname-56);
+					document.getElementById("seatno").value="3_"+colno;
+				}else if(seatname > 86 && seatname <= 118){
+					colno = calcolno(6,seatname-86);
+					document.getElementById("seatno").value="4_"+colno;
+				}else if(seatname > 118 && seatname <= 152){
+					colno = calcolno(5,seatname-118);
+					document.getElementById("seatno").value="5_"+colno;
+				}else if(seatname > 152 && seatname <= 188){
+					colno = calcolno(4,seatname-152);
+					document.getElementById("seatno").value="6_"+colno;
+				}else if(seatname > 188 && seatname <= 226){
+					colno = calcolno(3,seatname-188);
+					document.getElementById("seatno").value="7_"+colno;
+				}else if(seatname > 226 && seatname <= 266){
+					colno = calcolno(2,seatname-226);
+					document.getElementById("seatno").value="8_"+colno;
+				}else if(seatname > 266 && seatname <= 308){
+					colno = calcolno(1,seatname-266);
+					document.getElementById("seatno").value="9_"+colno;
+				}else if( seatname> 748 ){
+					alert("Seat number exceed range ");
+					resetseatname();
+				}else{
+					var row = Math.floor((seatname-308)/45)+10;
+					var base = 44*(row-10);
+					base = 309+base;
+					console.log('seatname-'+seatname+',colno-'+base);
+					colno = calcolno(1,(seatname-(base)));
+					document.getElementById("seatno").value=row+"_"+colno;
+				}
+				
+			}			
+		}
+		
+		
+		function calcolno(startno, calcolno){
+			calcolno += startno;
+			
+			if(calcolno > 8)
+				calcolno++;
+				
+			if(calcolno > 18)
+				calcolno++;
+				
+			if(calcolno > 28)
+				calcolno++;
+				
+				
+			if(calcolno > 39)
+				calcolno++;
+				
+			return calcolno;
+		}
+		
+		function resetseatname(){
+			document.getElementById("seatname").value="";
+			document.getElementById("seatno").value="";
+		}
+		function isANumber(str){
+		  return !/\D/.test(str);
+		}
+		
+		function onSubmit( form ){
+		  var data = JSON.stringify( $(form).serializeArray() ); //  <-----------
+		
+		  console.log( data );
+		  return false; //don't submit
+		}
+	</script>
+	<body>
+		<div class="form-style-5">
+			<form action="/camel-test-spring/skoregistration" method="post">
+			<fieldset>
+				<legend><span class="number">1</span> SKO Integration Seat Registration</legend>
+				<input type="text" name="candidatename" placeholder="Your Name *">
+				<input type="email" name="email" placeholder="Your Email *">
+				<input type="text" id="seatname" name="seatname" placeholder="Seat Name *" onchange="setrowcolno();">
+				<label for="row">SEAT ROW:</label>
+				<input type="text" id="seatno" name="seatno" placeholder="Seat Number" readonly>
+			</fieldset>
+			
+			<input type="submit" value="Submit" />
+			</form>
+		</div>
+	</body>
+</html>
