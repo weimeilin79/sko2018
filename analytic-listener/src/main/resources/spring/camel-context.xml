@@ -24,7 +24,7 @@
             </get>
         </rest>
         <route id="analytic-listener-route">
-            <from id="route-timer" uri="kafka:registration"/>
+            <from id="route-timer" uri="kafka:registration?groupId=analyticgroup"/>
             <setBody id="_setBody1">
                 <jsonpath>$.seatno</jsonpath>
             </setBody>
