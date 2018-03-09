@@ -148,9 +148,11 @@
 				                data: $(this).serialize(),
 				                dataType: 'json',
 				                success: function (data) {
+				                				//console.log(data);
 				                				var reservedseats = [];
+				                				
 				                        $.each(data, function (index, value) {
-																    reservedseats.push(value.SEATNO);
+																    reservedseats.push(value.seatno);
 																});
 																console.log(reservedseats);
 																sc.get(reservedseats).status('unavailable');
