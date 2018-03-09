@@ -1,0 +1,87 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "jboss-fuse-image-streams",
+        "annotations": {
+            "description": "ImageStream definitions for JBoss Fuse."
+        }
+    },
+    "items": [
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "jboss-fuse70-java-openshift"
+            },
+            "spec": {
+                "tags": [
+                    {
+                        "name": "1.0",
+                        "annotations": {
+                            "description": "JBoss Fuse 7.0 Java S2I images.",
+                            "iconClass": "icon-jboss",
+                            "tags": "builder,jboss-fuse,java,xpaas",
+                            "supports":"jboss-fuse:7.0.0,java:8,xpaas:1.2",
+                            "version": "1.0"
+                        },
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-java-openshift:1.0"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "jboss-fuse70-karaf-openshift"
+            },
+            "spec": {
+                "tags": [
+                    {
+                        "name": "1.0",
+                        "annotations": {
+                            "description": "JBoss Fuse 7.0 Karaf S2I images.",
+                            "iconClass": "icon-jboss",
+                            "tags": "builder,jboss-fuse,java,karaf,xpaas",
+                            "supports":"jboss-fuse:7.0.0,java:8,xpaas:1.2",
+                            "version": "1.0"
+                        },
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-karaf-openshift:1.0"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "jboss-fuse70-eap-openshift"
+            },
+            "spec": {
+                "tags": [
+                    {
+                        "name": "1.0",
+                        "annotations": {
+                            "description": "JBoss Fuse 7.0 EAP S2I images.",
+                            "iconClass": "icon-jboss",
+                            "tags": "builder,jboss-fuse,java,eap,xpaas",
+                            "supports":"jboss-fuse:7.0.0,java:8,xpaas:1.2",
+                            "version": "1.0"
+                        },
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-eap-openshift:1.0"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
