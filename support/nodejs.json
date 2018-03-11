@@ -282,9 +282,9 @@
       "value": ""
     },
     {
-      "name": "BACKEND_SERVICE_HOSTNAME",
-      "displayName": "Backend Service Hostname",
-      "description": "Host name of the backend Service",
+      "name": "ROUTE_HOSTNAME",
+      "displayName": "Backend Route Hostname",
+      "description": "Host name of the backend Route",
       "value": ""
     }
   ]
