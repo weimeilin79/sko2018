@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<title>Red Hat Integration Demo</title>
+		<title>Red Hat Integration Demo </title>
 		
 		<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="jquery.seat-charts.css">
@@ -16,7 +16,7 @@
 		<div class="wrapper">
 			<div class="container">
 				<div id="seat-map">
-					<div class="front-indicator">THE RED HAT INTEGRATION DEMO</div>
+					<div class="front-indicator">THE RED HAT INTEGRATION DEMO  </div>
 					
 				</div>
 				<!--<div class="booking-details">
@@ -144,15 +144,13 @@
 				function callAjax() {
 				  $.ajax({
 				                type: 'GET',
-				                url: 'http://seat-ui-reader-sko.192.168.99.100.nip.io/sko/sa/integration',
+				                url: '<%-routeurl%>/sko/sa/integration',
 				                data: $(this).serialize(),
 				                dataType: 'json',
 				                success: function (data) {
-				                				//console.log(data);
 				                				var reservedseats = [];
-				                				
 				                        $.each(data, function (index, value) {
-																    reservedseats.push(value.seatno);
+																    reservedseats.push(value.SEATNO);
 																});
 																console.log(reservedseats);
 																sc.get(reservedseats).status('unavailable');
