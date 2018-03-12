@@ -181,6 +181,7 @@
               {
                 "name": "nodejs-example",
                 "image": " ",
+                
                 "ports": [
                   {
                     "containerPort": 3000
@@ -208,7 +209,16 @@
                     }
                 },
                 "env": [
-                ]
+					          {
+					            "name": "ROUTE_HOSTNAME",
+					            "valueFrom": {
+					              "configMapKeyRef": {
+					                "key": "${UI_NAME}",
+					                "name": "${UI_ROUTE_CONFIGMAP}"
+					              }
+					          	}
+				          	}
+				        ]
               }
             ]
           }
@@ -282,9 +292,15 @@
       "value": ""
     },
     {
-      "name": "ROUTE_HOSTNAME",
-      "displayName": "Backend Route Hostname",
-      "description": "Host name of the backend Route",
+      "name": "UI_ROUTE_CONFIGMAP",
+      "displayName": "UI Route ConfigMp",
+      "description": "ConfigMap name of UI Route",
+      "value": "uirouteconfig"
+    },
+    {
+      "name": "UI_NAME",
+      "displayName": "Name of the UI",
+      "description": "Name of the UI",
       "value": ""
     }
   ]
