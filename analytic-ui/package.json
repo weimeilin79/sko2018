@@ -4,7 +4,10 @@
   "description": "analytic-ui",
   "main": "server/app.js",
   "dependencies": {
-    "patternfly": "3.11.0"
+    "gulp": "^3.9.1",
+    "html-webpack-plugin": "^3.0.6",
+    "patternfly": "3.11.0",
+    "process-env": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",

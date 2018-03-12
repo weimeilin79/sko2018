@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Patternfly Demo App</title>
+
+    <!-- webpack bundled css -->
+    <link rel="stylesheet" href="css/patternfly.min.css">
+    <link rel="stylesheet" href="css/patternfly-additions.min.css">
+
+    <!-- webpack bundled dependencies -->
+    <script src="main.bundle.js"></script>
+
+    <!-- c3.js d3.js bundled dependencies -->
+    <script src="charts.bundle.js"></script>
+  </head>
+  <body class="cards-pf">
+
+<!-- nav -->
+<nav class="navbar navbar-default navbar-pf" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">
+      <img src="img/brand.svg" alt="Patternfly Demo App" />
+    </a>
+  </div>
+  <div class="collapse navbar-collapse navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-utility">
+      <li>
+        <a href="#">Status</a>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <span class="pficon pficon-user"></span>
+          Brian Johnson <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#">Settings</a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="index.html">Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-primary">
+      <li class="active">
+        <a href="index.html">Dashboard</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid container-cards-pf">
+
+   <div class="row row-cards-pf">
+         <div class="col-md-6">
+           <div class="card-pf card-pf-utilization">
+             <div class="card-pf-heading">
+               <p class="card-pf-heading-details">Live status</p>
+               <h2 class="card-pf-title">
+                 Seat Priority Chart
+               </h2>
+             </div>
+             <div class="card-pf-body">
+               <div class="row">
+                 <div class="col-xs-12 col-sm-4 col-md-6">
+                   <h3 class="card-pf-subtitle">LOGE</h3>
+                   <p class="card-pf-utilization-details">
+                     <span class="card-pf-utilization-card-details-count" id="classlogeno">50</span>
+                     <span class="card-pf-utilization-card-details-description">
+                       <span class="card-pf-utilization-card-details-line-1">Reserved</span>
+                       <span class="card-pf-utilization-card-details-line-2">of 118 Seats</span>
+                     </span>
+                   </p>
+                   <div id="chart-pf-donut-1"></div>
+                 </div>
+                 <div class="col-xs-12 col-sm-4 col-md-6">
+                   <h3 class="card-pf-subtitle">CLUB</h3>
+                   <p class="card-pf-utilization-details">
+                     <span class="card-pf-utilization-card-details-count" id="classclubno">256</span>
+                     <span class="card-pf-utilization-card-details-description">
+                       <span class="card-pf-utilization-card-details-line-1">Reserved</span>
+                       <span class="card-pf-utilization-card-details-line-2">of 630 Seats</span>
+                     </span>
+                   </p>
+                   <div id="chart-pf-donut-2"></div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+         
+         <div class="col-xs-12 col-md-6">
+            <div class="card-pf">
+              <div class="card-pf-heading">
+                <h2 class="card-pf-title">
+                  Row Reservation Status
+                </h2>
+              </div>
+              <div class="card-pf-body" id="rowlist">
+                
+            </div>
+         </div>
+       </div><!-- /row -->
+
+</div><!-- container -->
+
+
+<script>
+	$(document).ready(function() {
+		
+		var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
+		var chart1;
+		var chart3;
+		
+		var interval;
+		function callStatus() {
+		  $.ajax({
+		  	type: 'GET',
+		  	url: 'http://<%= htmlWebpackPlugin.options.routeurl %>/analytic/status/class',
+		  	data: $(this).serialize(),
+		  	dataType: 'json',
+		  	success: function (data) {
+		  					
+		  	        $.each(data, function (index, value) {
+
+								    if('LOGE'==data[index].CLASS){      
+								    		
+								    		$('#classlogeno').text(data[index].CNT);
+								    		var reservedint=  Math.round((parseInt(data[index].CNT)/118*100));
+								    		var availableint= 100-reservedint;
+								    		
+								    		donutChartConfig = genDonutChartConfig('#chart-pf-donut-1',
+																							[
+																		            ["Reserved", reservedint],
+																		            ["Available", availableint]
+																		          ],
+																		          [
+																		            ["reserved", "available"]
+																		          ],
+																		          ["#4682B4","#D1D1D1"]);
+																		          
+												chart1 = c3.generate(donutChartConfig);
+												var donutChartTitle = d3.select("#chart-pf-donut-1").select('text.c3-chart-arcs-title');
+      									donutChartTitle.text("");
+      									donutChartTitle.insert('tspan').text(data[index].CNT).classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
+      									donutChartTitle.insert('tspan').text("Seat Reserved").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+								    }else{
+								        $('#classclubno').text(data[index].CNT);
+								        var reservedint=  Math.round((parseInt(data[index].CNT)/630*100));
+								    		var availableint= 100-reservedint;
+								    		
+								    		donutChartConfig = genDonutChartConfig('#chart-pf-donut-2',
+																							[
+																		            ["Reserved", reservedint],
+																		            ["Available", availableint]
+																		          ],
+																		          [
+																		            ["reserved", "available"]
+																		          ],
+																		          ["#3f9c35","#D1D1D1"]);
+									          
+									          
+									      chart3 = c3.generate(donutChartConfig);
+									
+									      var donutChartTitle = d3.select("#chart-pf-donut-2").select('text.c3-chart-arcs-title');
+									      donutChartTitle.text("");
+									      donutChartTitle.insert('tspan').text(data[index].CNT).classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
+									      donutChartTitle.insert('tspan').text("Seat Reserved").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+								    }
+								});
+								
+								
+		  	        interval = setTimeout(callStatus, 5000);   
+		  	}
+		  });
+		}
+		callStatus();
+		
+		function callRow() {
+		  $.ajax({
+		  	type: 'GET',
+		  	url: 'http://<%= htmlWebpackPlugin.options.routeurl %>/analytic/status/row',
+		  	data: $(this).serialize(),
+		  	dataType: 'json',
+		  	success: function (data) {
+		  					$('#rowlist').empty();
+		  	        $.each(data, function (index, value) {
+								    console.log(data[index]);  
+								    var reservedint=  Math.round((parseInt(data[index].CNT)/44*100));
+								   	var remainno= 100-reservedint;
+								    $('#rowlist').append(createReservationStatus('ROW '+data[index].ROW,reservedint,remainno));
+								    
+								});
+		  	        interval = setTimeout(callRow, 5000);   
+		  	}
+		  });
+		}
+		callRow();
+		
+		function genDonutChartConfig(chartname, chartcolumns, chartgroup, colourpattern){
+			donutChartConfig.bindto = chartname;
+      donutChartConfig.data = {
+        type: "donut",
+          columns: chartcolumns,
+          groups: chartgroup,
+        order: null
+      };
+      donutChartConfig.color = {
+          pattern: colourpattern
+      };	
+      return donutChartConfig;
+		}
+		
+		function createReservationStatus(title,reserveno,remainno){
+			
+			var rowtitle= "<div class='progress-description'>"+title+"</div>";
+      var rowindiviual ="<div class='progress progress-label-top-right'> <div class='progress-bar progress-bar-danger' role='progressbar' aria-valuenow='"+reserveno+"' aria-valuemin='0' aria-valuemax='100' style='width: "+reserveno+"%;'  data-toggle='tooltip' title='"+reserveno+"% Reserved'>";
+      rowindiviual= rowindiviual+"<span><strong>"+reserveno+"</strong> Reserved</span> </div>"
+      rowindiviual= rowindiviual+"<div class='progress-bar progress-bar-remaining' role='progressbar' aria-valuenow='"+remainno+"' aria-valuemin='0' aria-valuemax='100' style='width: "+remainno+"%;' data-toggle='tooltip' title='"+remainno+"% Available'>";
+      rowindiviual= rowindiviual+"<span class='sr-only'>"+remainno+"% Available</span>";
+      rowindiviual= rowindiviual+"</div>";
+      rowindiviual= rowindiviual+"</div>";
+      
+      return rowtitle+rowindiviual;
+		}
+		
+		
+		
+		
+    $(function() {
+      // matchHeight the contents of each .card-pf and then the .card-pf itself
+      $(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
+      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
+      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-footer").matchHeight();
+      $(".row-cards-pf > [class*='col'] > .card-pf").matchHeight();
+    });
+  });
+
+</script>
+
+  </body>
+</html>
+
