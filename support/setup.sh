@@ -30,13 +30,7 @@ echo "Setup mysqlDB"
 #oc rsync db-mysql <mysql_pod_name>:/var/lib/mysql/data
 #oc rsh <mysql_pod>
 #cd /var/lib/mysql/data/db-mysql
-#mysql sampledb --user=dbuser --password 
-# <ENTER PASSEORD>
-# source schema.sql
-
-
-echo "Set up Nodejs template"
-oc create -f nodejs.json 
+#mysql sampledb --user=dbuser --password < schema.sql
 
 
 echo "Start up POSTGRESQL for database access"
@@ -52,6 +46,12 @@ echo "Setup postgresqkDB"
 #cd /var/lib/pgsql/data/userdata/db-postgresql/
 #psql -U dbuser -d sampledb -a -f schema.sql
 
+
+echo "Set up RouteConfigMap"
+oc create -f configmap.json
+
+echo "Set up Nodejs template"
+oc create -f nodejs.json 
 
 
 #Create Transform Camel
@@ -73,7 +73,7 @@ oc new-app seat-ui-reader
 
 # SEAT UI
 echo "Install SEAT UI "
-oc new-app --template=nodejs-example --param=NAME=seat-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=seat-ui --param=SOURCE_REPOSITORY_REF=master
+oc new-app --template=nodejs-example --param=NAME=seat-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=seat-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=seat-ui
 
 
 ############################################################################################
@@ -84,7 +84,7 @@ oc create -f registration-ui.json
 oc new-app fuse-eap
 
 echo "Install Registration Monitor UI "
-oc new-app --template=nodejs-example --param=NAME=registration-live-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=registration-live-ui --param=SOURCE_REPOSITORY_REF=master
+oc new-app --template=nodejs-example --param=NAME=registration-live-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=registration-live-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=registration-live-ui
 
 #Registration Command Center
 echo "Install Registration Command Center "
@@ -98,7 +98,7 @@ oc create -f analytic-listener.yml
 oc new-app analytic-listener
 
 echo "Install Analytic UI"
-oc new-app --template=nodejs-example --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master
+oc new-app --template=nodejs-example --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=analytic-ui
 
 
 ############################################################################################
