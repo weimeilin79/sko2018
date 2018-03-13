@@ -125,7 +125,7 @@
 		function callStatus() {
 		  $.ajax({
 		  	type: 'GET',
-		  	url: 'http://<%= htmlWebpackPlugin.options.routeurl %>/analytic/status/class',
+		  	url: '<%= htmlWebpackPlugin.options.routeurl %>/analytic/status/class',
 		  	data: $(this).serialize(),
 		  	dataType: 'json',
 		  	success: function (data) {
@@ -188,7 +188,7 @@
 		function callRow() {
 		  $.ajax({
 		  	type: 'GET',
-		  	url: 'http://<%= htmlWebpackPlugin.options.routeurl %>/analytic/status/row',
+		  	url: '<%= htmlWebpackPlugin.options.routeurl %>/analytic/status/row',
 		  	data: $(this).serialize(),
 		  	dataType: 'json',
 		  	success: function (data) {
