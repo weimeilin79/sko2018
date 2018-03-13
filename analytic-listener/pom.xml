@@ -68,7 +68,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-jsonpath-starter</artifactId>
+      <artifactId>camel-jsonpath</artifactId>
     </dependency>
 	<dependency>
 	      <groupId>mysql</groupId>
