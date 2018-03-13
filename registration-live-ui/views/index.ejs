@@ -90,7 +90,7 @@ $(document).ready(function() {
 	    function callAjax() {
 				  $.ajax({
 				    type: 'GET',
-						url: 'http://<%- routeurl %>/skoregistration/sa/status',
+						url: '<%-routeurl%>/skoregistration/sa/status',
 				    data: $(this).serialize(),
 				    dataType: 'json',
 				    success: function (data) {
