@@ -5,12 +5,18 @@ var path = require('path');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var WriteFilesPlugin = require('write-file-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var processenv = require('process-env');
+const routeurlstr = process.env.ROUTE_HOSTNAME === 'http://localhost:3000'
+console.log("routeurlstr="+routeurlstr);
 
 module.exports = {
     debug: true,
 
     devtool: 'source-map',
-
+	
+		routeurl: routeurlstr,
+		
     entry: {
         'main': './src/js/main',
         'charts': './src/js/charts',
@@ -82,7 +88,14 @@ module.exports = {
         new ExtractTextPlugin("[name].css", {allChunks: false}),
 
         //writes files on changes to src
-        new WriteFilesPlugin()
+        new WriteFilesPlugin(),
+        new HtmlWebpackPlugin({ 
+        	hash: true,
+        	template: 'src/views/index.ejs',
+        	filename: 'index.html',
+        	routeurl: routeurlstr
+        	
+        })
     ],
 
     module: {
