@@ -92,7 +92,7 @@ module.exports = {
         	hash: true,
         	template: 'src/views/index.ejs',
         	filename: 'index.html',
-        	routeurl: {process.env.ROUTE_HOSTNAME || 'http://localhost:3000'}
+        	routeurl: process.env.ROUTE_HOSTNAME
         	
         })
     ],
