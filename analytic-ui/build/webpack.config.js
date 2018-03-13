@@ -7,7 +7,8 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var WriteFilesPlugin = require('write-file-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var processenv = require('process-env');
-const routeurlstr = process.env.ROUTE_HOSTNAME === 'http://localhost:3000'
+
+const routeurlstr = process.env.ROUTE_HOSTNAME === 'http://localhost:3000';
 console.log("routeurlstr="+routeurlstr);
 
 module.exports = {
