@@ -27,7 +27,7 @@
                         },
                         "from": {
                             "kind": "DockerImage",
-                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-java-openshift:1.0"
+                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-java-openshift:latest"
                         }
                     }
                 ]
@@ -77,7 +77,7 @@
                         },
                         "from": {
                             "kind": "DockerImage",
-                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-eap-openshift:1.0"
+                            "name": "registry.access.redhat.com/jboss-fuse-7-tech-preview/fuse-eap-openshift:latest"
                         }
                     }
                 ]
