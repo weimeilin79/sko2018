@@ -17,8 +17,9 @@
 	"dependencies": {
 		"event-stream": "^3.3.4",
 		"express": "^4.16.2",
-		"gulp": "^3.9.1",
-		"gulp-autoprefixer": "^5.0.0",
+		"commitplease": "2.3.0",
+		"ejs": "^2.5.7",
+		"event-stream": "^3.3.4",
 		"npm": "^5.7.1"
 	},
 	"devDependencies": {
