@@ -5,7 +5,8 @@
   "main": "server/app.js",
   "dependencies": {
     "patternfly": "3.11.0",
-    "process-env": "^1.1.0"
+    "process-env": "^1.1.0",
+    "webpack": "^1.15.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
