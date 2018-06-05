@@ -5,7 +5,6 @@
   "main": "server/app.js",
   "dependencies": {
     "gulp": "^3.9.1",
-    "html-webpack-plugin": "^3.0.6",
     "patternfly": "3.11.0",
     "process-env": "^1.1.0",
     "babel-core": "^6.1.2",
@@ -26,10 +25,7 @@
     "strip-ansi": "^3.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.15.0",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.12.1",
-    "write-file-webpack-plugin": "^3.1.8"
+    "webpack": "^1.15.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
