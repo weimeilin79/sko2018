@@ -9,6 +9,8 @@ oc login https://master.9c4c.openshift.opentlc.com -u opentlc-mgr -p r3dh4t1!
 oc project openshift
 oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-000085/fis-image-streams.json -n openshift
 oc create -f https://raw.githubusercontent.com/strimzi/strimzi/0.1.0/kafka-inmemory/resources/openshift-template.yaml -n openshift
+
+oc delete template nodejs-example
 oc create -f https://raw.githubusercontent.com/sclorg/nodejs-ex/master/openshift/templates/nodejs.json -n openshift
 
 ############################################################################################
@@ -128,7 +130,7 @@ oc new-app seat-ui-reader
 
 # SEAT UI
 echo "Install SEAT UI "
-oc new-app --template=nodejs-example --param=NAME=seat-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=seat-ui --param=SOURCE_REPOSITORY_REF=master
+oc new-app --template=nodejs-example --param=NAME=seat-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=seat-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=seat-ui
 
 
 ############################################################################################
@@ -139,7 +141,7 @@ oc create -f registration-ui.json
 oc new-app fuse-eap
 
 echo "Install Registration Monitor UI "
-oc new-app --template=nodejs-example --param=NAME=registration-live-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=registration-live-ui --param=SOURCE_REPOSITORY_REF=master
+oc new-app --template=nodejs-example --param=NAME=registration-live-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=registration-live-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=registration-live-ui
 
 #Registration Command Center
 echo "Install Registration Command Center "
@@ -153,9 +155,7 @@ oc create -f analytic-listener.yml
 oc new-app analytic-listener
 
 echo "Install Analytic UI"
-oc new-app --template=nodejs-example --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master
-#oc new-app --name nodejs-example nodejs:latest --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=analytic-ui
-#oc new-app --name analytic-ui nodejs:8~https://github.com/weimeilin79/sko2018/analytic-ui
+oc new-app --template=nodejs-example --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=analytic-ui
 ############################################################################################
 
 #Simulator
