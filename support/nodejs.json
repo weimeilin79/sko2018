@@ -34,8 +34,8 @@
         "ports": [
           {
             "name": "web",
-            "port": 3000,
-            "targetPort": 3000
+            "port": 8080,
+            "targetPort": 8080
           }
         ],
         "selector": {
@@ -92,7 +92,7 @@
             "from": {
               "kind": "ImageStreamTag",
               "namespace": "${NAMESPACE}",
-              "name": "nodejs:6"
+              "name": "nodejs:latest"
             },
             "env":  [
               {
@@ -184,7 +184,7 @@
                 
                 "ports": [
                   {
-                    "containerPort": 3000
+                    "containerPort": 8080
                   }
                 ],
                 "readinessProbe": {
@@ -192,7 +192,7 @@
                   "initialDelaySeconds": 3,
                   "httpGet": {
                     "path": "/",
-                    "port": 3000
+                    "port": 8080
                   }
                 },
                 "livenessProbe": {
@@ -200,7 +200,7 @@
                     "initialDelaySeconds": 30,
                     "httpGet": {
                         "path": "/",
-                        "port": 3000
+                        "port": 8080
                     }
                 },
                 "resources": {
@@ -212,7 +212,7 @@
 					          {
 					            "name": "ROUTE_HOSTNAME",
 					            "valueFrom": {
-					              "configMapKeyRef": {
+					              "c": {
 					                "key": "${UI_NAME}",
 					                "name": "${UI_ROUTE_CONFIGMAP}"
 					              }
