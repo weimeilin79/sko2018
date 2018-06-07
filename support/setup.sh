@@ -2,16 +2,14 @@
 #minishift config set cpus 4
 #minishift config set disk-size 30g
 
-
-
 #oc login -u system:admin
 oc login https://master.9c4c.openshift.opentlc.com -u opentlc-mgr -p r3dh4t1!
 oc project openshift
 oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-000085/fis-image-streams.json -n openshift
 oc create -f https://raw.githubusercontent.com/strimzi/strimzi/0.1.0/kafka-inmemory/resources/openshift-template.yaml -n openshift
 
-oc delete template nodejs-example
-oc create -f https://raw.githubusercontent.com/sclorg/nodejs-ex/master/openshift/templates/nodejs.json -n openshift
+oc delete template nodejs-example -n openshift
+oc create -f nodejs.json -n openshift
 
 ############################################################################################
 
@@ -46,7 +44,7 @@ mysqlpod=`echo $inputchk | awk '{split($0,a," "); print a[1]}'`;
 
 echo $mysqlpod
 
-#Wait for mysqldb to startup
+echo "Waiting for mysqldb to startup -- don't worry if you see error"
 mysqlconnected=`oc exec $mysqlpod -- bash -c "mysql --user=dbuser --password=password sampledb -e 'select 1'"`
 
 while [ -z "$mysqlconnected" ]
@@ -85,7 +83,7 @@ postgresqlpod=`echo $inputchk | awk '{split($0,a," "); print a[1]}'`;
 
 echo $postgresqlpod
 
-#Wait for postgresql to startup
+echo "Waiting for postgresql to startup -- don't worry if you see error"
 postgresqlconnected=`oc exec $postgresqlpod -- bash -c "psql -U dbuser -q -d sampledb -c 'SELECT 1'"`
 
 while [ -z "$postgresqlconnected" ]
@@ -148,11 +146,17 @@ echo "Install Registration Command Center "
 oc create -f registration-command.yml
 oc new-app registration-command
 
+oc set probe dc/registration-command --readiness --initial-delay-seconds=30 --period-seconds=30
+oc set probe dc/registration-command --liveness --initial-delay-seconds=360 --period-seconds=30
+
 ############################################################################################
 #Analytic
 echo "Install Analytic Listener"
 oc create -f analytic-listener.yml
 oc new-app analytic-listener
+
+oc set probe dc/analytic-listener --readiness --initial-delay-seconds=30 --period-seconds=30
+oc set probe dc/analytic-listener --liveness --initial-delay-seconds=360 --period-seconds=30
 
 echo "Install Analytic UI"
 oc new-app --template=nodejs-example --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=analytic-ui
@@ -163,7 +167,8 @@ echo "Install Simulator"
 oc create -f seat-reserve-simulator.yml
 oc new-app seat-reserve-simulator
 
-
+# Stop the simulator for now
+oc scale rc seat-reserve-simulator-1 --replicas=0
 
 
 
