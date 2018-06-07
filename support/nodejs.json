@@ -212,7 +212,7 @@
 					          {
 					            "name": "ROUTE_HOSTNAME",
 					            "valueFrom": {
-					              "c": {
+					              "configMapKeyRef": {
 					                "key": "${UI_NAME}",
 					                "name": "${UI_ROUTE_CONFIGMAP}"
 					              }
