@@ -3,7 +3,7 @@
 #minishift config set disk-size 30g
 
 #oc login -u system:admin
-oc login https://master.9c4c.openshift.opentlc.com -u opentlc-mgr -p r3dh4t1!
+
 oc project openshift
 oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-000085/fis-image-streams.json -n openshift
 oc create -f https://raw.githubusercontent.com/strimzi/strimzi/0.1.0/kafka-inmemory/resources/openshift-template.yaml -n openshift
@@ -146,8 +146,11 @@ echo "Install Registration Command Center "
 oc create -f registration-command.yml
 oc new-app registration-command
 
-oc set probe dc/registration-command --readiness --initial-delay-seconds=30 --period-seconds=30
-oc set probe dc/registration-command --liveness --initial-delay-seconds=360 --period-seconds=30
+
+#undertow does not expose 8081 health
+#oc set probe dc/registration-command --readiness --initial-delay-seconds=30 --period-seconds=30
+#oc set probe dc/registration-command --liveness --initial-delay-seconds=360 --period-seconds=30
+oc set probe dc/registration-command  --remove --readiness --liveness
 
 ############################################################################################
 #Analytic
@@ -155,8 +158,10 @@ echo "Install Analytic Listener"
 oc create -f analytic-listener.yml
 oc new-app analytic-listener
 
-oc set probe dc/analytic-listener --readiness --initial-delay-seconds=30 --period-seconds=30
-oc set probe dc/analytic-listener --liveness --initial-delay-seconds=360 --period-seconds=30
+#undertow does not expose 8081 health
+#oc set probe dc/analytic-listener --readiness --initial-delay-seconds=30 --period-seconds=30
+#oc set probe dc/analytic-listener --liveness --initial-delay-seconds=360 --period-seconds=30
+oc set probe dc/analytic-listener  --remove --readiness --liveness
 
 echo "Install Analytic UI"
 oc new-app --template=nodejs-example --param=NAME=analytic-ui --param=SOURCE_REPOSITORY_URL=https://github.com/weimeilin79/sko2018.git --param=CONTEXT_DIR=analytic-ui --param=SOURCE_REPOSITORY_REF=master --param=UI_NAME=analytic-ui
