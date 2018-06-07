@@ -9,7 +9,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var processenv = require('process-env');
 var routeurlstr = process.env.ROUTE_HOSTNAME;
 if(routeurlstr == null || routeurlstr == '')
-	routeurlstr = "http://localhost:3000";
+	routeurlstr = "http://localhost:8080";
 console.log("routeurlstr="+routeurlstr);
 
 module.exports = {
