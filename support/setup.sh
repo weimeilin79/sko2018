@@ -4,6 +4,29 @@
 
 #oc login -u system:admin
 
+HOST_ROUTE=$1
+
+if [ -z "$HOST_ROUTE" ]
+then
+      echo "HOST_ROUTE is empty, please enter your OpenShift Host route, ie, > setup.sh apps.sko18.opentlc.com  or > setup.sh 192.168.99.100.nip.io"
+			exit
+fi
+
+rm -f configmap-gen.json
+rm -f all.html
+
+while read a ; 
+	do 
+		echo ${a//TOBEREPLACED/$HOST_ROUTE} ; 
+	done < configmap.json > configmap-gen.json ;
+
+echo set all UI route listening to HOST $HOST_ROUTE
+
+while read a ; 
+	do 
+		echo ${a//TOBEREPLACED/$HOST_ROUTE} ; 
+	done < all-template.html > all.html ;
+
 oc project openshift
 oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.1.fuse-000085/fis-image-streams.json -n openshift
 oc create -f https://raw.githubusercontent.com/strimzi/strimzi/0.1.0/kafka-inmemory/resources/openshift-template.yaml -n openshift
@@ -23,7 +46,7 @@ oc new-app strimzi
 
 
 #DATABSE
-##########################
+##################################################################################################################################
 echo "Start up MySQL for database access"
 oc create -f mysql-ephemeral-template.json
 oc new-app --template=mysql-ephemeral --param=MYSQL_PASSWORD=password --param=MYSQL_USER=dbuser --param=MYSQL_DATABASE=sampledb
@@ -99,11 +122,11 @@ oc rsync db-postgresql $postgresqlpod:/var/lib/pgsql/data/userdata
 #Insert table into postgresql
 oc exec $postgresqlpod -- bash -c "psql -U dbuser -d sampledb -a -f /var/lib/pgsql/data/userdata/db-postgresql/schema.sql"
 
-
+#####################################################################################################################################
 
 
 echo "Set up RouteConfigMap"
-oc create -f configmap.json
+oc create -f configmap-gen.json
 
 echo "Set up Nodejs template"
 oc create -f nodejs.json 
