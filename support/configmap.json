@@ -5,8 +5,8 @@
 "name": "uirouteconfig"
 },
 "data": {
-"analytic-ui": "http://analytic-listener-sko.apps.sko18.openshiftworkshop.com",
-"registration-live-ui": "http://registration-command-sko.apps.sko18.openshiftworkshop.com",
-"seat-ui": "http://seat-ui-reader-sko.apps.sko18.openshiftworkshop.com"
+"analytic-ui": "http://analytic-listener-sko.TOBEREPLACED",
+"registration-live-ui": "http://registration-command-sko.TOBEREPLACED",
+"seat-ui": "http://seat-ui-reader-sko.TOBEREPLACED"
 }
 }
