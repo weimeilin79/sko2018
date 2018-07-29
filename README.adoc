@@ -1,0 +1,7 @@
+= Seat Reservation - Event Ticket Demo
+
+This is a demo application about a seat registration. 
+The objective of this demo is demonstrate how AMQ Streams (Kafka) could be used as an event stream.
+
+image::docs/demo1.png[Seat Reservation Architecture]
+image::docs/demo2.png[Seat Reservation Architecture]
