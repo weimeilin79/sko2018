@@ -196,7 +196,7 @@ oc create -f seat-reserve-simulator.yml
 oc new-app seat-reserve-simulator
 
 # Stop the simulator for now
-oc scale rc seat-reserve-simulator-1 --replicas=0
+oc scale dc seat-reserve-simulator --replicas=0
 
 
 
